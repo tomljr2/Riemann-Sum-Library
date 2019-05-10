@@ -14,7 +14,7 @@ def RiemannSum(f,a,b,n=1000,type='l',plot=False):
       import numpy as np
       import matplotlib.pyplot as plt
       fig,ax = plt.subplots(1)
-      r = np.arange(a,b,0.025*abs(b-a))
+      r = np.arange(a,b,0.001*abs(b-a))
       ax.plot(r,f(r))
 
    # If a == b, then there is no area, so the Riemann sum
@@ -28,14 +28,21 @@ def RiemannSum(f,a,b,n=1000,type='l',plot=False):
    # Perform the Riemann sum approximation based on where
    # the user specified the rectangles to be positioned
    for i in range(1,n+1):
-      if(type == 'l'):
-         x = f(a+(i-1)*dx)
-      elif(type == 'm'):
-         x = f(((a+i*dx)+(a+(i-1)*dx))/2)
-      elif(type == 'r'):
-         x = f(a+i*dx)
-      else:
-         raise Exception("Invalid Riemann sum type")
+      try:
+         if(type == 'l'):
+            x = f(a+(i-1)*dx)
+         elif(type == 'm'):
+            x = f(((a+i*dx)+(a+(i-1)*dx))/2)
+         elif(type == 'r'):
+            x = f(a+i*dx)
+         else:
+            raise Exception("Invalid Riemann sum type")
+      except (ValueError,ZeroDivisionError):
+         continue
+
+      # Check for np nan values
+      if(x != x):
+         continue
 
       if(plot):
          ax.add_patch(plt.Rectangle((a+(i-1)*dx,0),dx,x, \
