@@ -2,11 +2,19 @@ def RiemannSum(f,a,b,n=1000,type='l',plot=False):
    rSum = 0
    flip = False
 
+   # If a == b, then there is no area, so the Riemann sum
+   # approximation is just 0. So don't even bother plotting.
+   if(a == b):
+      return 0
+
    # For now, just flip a and b if b < a
    # and then make the final result negative
    if(b < a):
       flip = True
       a,b = b,a
+
+   # Calculate the delta x
+   dx = ((b-a)*1.0)/n
 
    # Plot the original function on the graph in the
    # given range, if the user specified to plot.
@@ -16,14 +24,6 @@ def RiemannSum(f,a,b,n=1000,type='l',plot=False):
       fig,ax = plt.subplots(1)
       r = np.arange(a,b,0.001*abs(b-a))
       ax.plot(r,f(r))
-
-   # If a == b, then there is no area, so the Riemann sum
-   # approximation is just 0. So don't even bother plotting.
-   if(a == b):
-      return 0
-
-   # Calculate the delta x
-   dx = ((b-a)*1.0)/n
 
    # Perform the Riemann sum approximation based on where
    # the user specified the rectangles to be positioned
